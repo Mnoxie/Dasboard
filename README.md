@@ -63,6 +63,30 @@ body{
   font-family:inherit;font-size:12px;font-weight:600;color:var(--tinta);
   border:none;background:transparent;cursor:pointer;padding:0;outline:none;
 }
+.ms{position:relative;}
+.ms-btn{
+  display:flex;align-items:center;gap:6px;
+  font-family:inherit;font-size:12px;font-weight:600;color:var(--tinta);
+  background:none;border:none;padding:0;cursor:pointer;
+}
+.ms-btn svg{width:11px;height:11px;color:var(--tinta-35);transition:transform .15s;}
+.ms-btn[aria-expanded="true"] svg{transform:rotate(180deg);}
+.ms-panel{
+  display:none;position:absolute;top:calc(100% + 9px);right:0;z-index:30;
+  min-width:190px;padding:5px;
+  background:var(--panel);border:1px solid var(--linea);border-radius:7px;
+  box-shadow:0 6px 20px rgba(20,28,46,.16);
+}
+.ms-panel.abierto{display:block;}
+.ms-opt{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:5px;cursor:pointer;
+  font-size:12.5px;font-weight:600;color:var(--tinta-60);
+  user-select:none;
+}
+.ms-opt:hover{background:var(--panel-2);color:var(--tinta);}
+.ms-opt input{width:15px;height:15px;accent-color:var(--rojo);cursor:pointer;margin:0;flex-shrink:0;}
+.ms-opt.todos{border-bottom:1px solid var(--linea-suave);border-radius:5px 5px 0 0;margin-bottom:3px;padding-bottom:9px;}
 .btn-borrar{
   display:flex;align-items:center;gap:6px;
   font-family:inherit;font-size:11px;font-weight:600;color:var(--tinta-60);
@@ -206,9 +230,13 @@ td.unidad{
   <div class="tb-right">
     <div class="filtro">
       <svg class="filtro-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-      <div>
+      <div class="ms" id="msSegmento">
         <div class="filtro-lab">Segmento</div>
-        <select id="selSegmento" aria-label="Segmento"></select>
+        <button class="ms-btn" id="msBtn" type="button" aria-haspopup="true" aria-expanded="false">
+          <span id="msLabel">Todos</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="ms-panel" id="msPanel" role="group" aria-label="Segmentos"></div>
       </div>
     </div>
     <button class="btn-borrar" id="btnBorrar" type="button">
@@ -267,7 +295,7 @@ td.unidad{
 </div>
 
 <script>
-const SEGMENTOS = ['Todos','Classic','A','B','Select','Negocio','P1','P2'];
+const SEGMENTOS = ['Classic','A','B','Select','Negocio','P1','P2'];
 const PRODUCTOS = {
   'Consumo':   ['Gestión Anticipada','Cartera Irregular','Cartera Vencida'],
   'Hipoteca':  ['Reestructuración Hipotecaria','Salida Integral','Reorganiza','Posterga','OTC'],
@@ -287,9 +315,16 @@ function datos(seg,prod,sub,mes){
 const nMil = new Intl.NumberFormat('es-CL');
 const nDec = new Intl.NumberFormat('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1});
 
-let segmentoSel='Todos', productoSel='Consumo', carteraSel=PRODUCTOS['Consumo'][0];
+let segmentosSel = new Set(); // vacio = todos
+let productoSel='Consumo', carteraSel=PRODUCTOS['Consumo'][0];
 
-const segsActivos = () => segmentoSel==='Todos' ? SEGMENTOS.slice(1) : [segmentoSel];
+const segsActivos = () => segmentosSel.size ? [...segmentosSel] : SEGMENTOS;
+function etiquetaSegmento(){
+  if(segmentosSel.size===0) return 'Todos';
+  if(segmentosSel.size===1) return [...segmentosSel][0];
+  if(segmentosSel.size===SEGMENTOS.length) return 'Todos';
+  return segmentosSel.size + ' seleccionados';
+}
 
 function agregados(subs){
   const segs=segsActivos();
@@ -339,8 +374,21 @@ function pintarTabs(id,valores,activo,onPick,animar){
 }
 
 function render(animarCartera,paneles){
-  document.getElementById('selSegmento').innerHTML =
-    SEGMENTOS.map(v=>`<option${v===segmentoSel?' selected':''}>${v}</option>`).join('');
+  document.getElementById('msLabel').textContent = etiquetaSegmento();
+  const panel = document.getElementById('msPanel');
+  panel.innerHTML =
+    `<label class="ms-opt todos"><input type="checkbox" data-todos="1"${segmentosSel.size===0?' checked':''}>Todos</label>` +
+    SEGMENTOS.map(v=>
+      `<label class="ms-opt"><input type="checkbox" value="${v}"${segmentosSel.has(v)?' checked':''}>${v}</label>`
+    ).join('');
+  panel.querySelectorAll('input').forEach(inp=>{
+    inp.onchange = ()=>{
+      if(inp.dataset.todos){ segmentosSel.clear(); }
+      else if(inp.checked){ segmentosSel.add(inp.value); }
+      else { segmentosSel.delete(inp.value); }
+      render(false,['panelTotal','panelDetalle']);
+    };
+  });
 
   pintarTabs('tabsProducto',Object.keys(PRODUCTOS),productoSel,v=>{
     productoSel=v; carteraSel=PRODUCTOS[v][0]; render(true,['panelTotal','panelDetalle']);
@@ -369,8 +417,8 @@ function render(animarCartera,paneles){
   document.getElementById('apAtraso').textContent = Math.round(D.venta?D.atraso/D.venta*100:0)+'%';
 
   document.getElementById('scopeTotal').textContent =
-    `· ${segmentoSel} · ${productoSel} — suma de ${PRODUCTOS[productoSel].length} tipos de cartera`;
-  document.getElementById('scopeDetalle').textContent = `· ${segmentoSel} · ${productoSel} › ${carteraSel}`;
+    `· ${etiquetaSegmento()} · ${productoSel} — suma de ${PRODUCTOS[productoSel].length} tipos de cartera`;
+  document.getElementById('scopeDetalle').textContent = `· ${etiquetaSegmento()} · ${productoSel} › ${carteraSel}`;
 
   (paneles||[]).forEach(id=>{
     const el=document.getElementById(id);
@@ -378,9 +426,22 @@ function render(animarCartera,paneles){
   });
 }
 
-document.getElementById('selSegmento').onchange = e=>{ segmentoSel=e.target.value; render(false,['panelTotal','panelDetalle']); };
+const msBtn=document.getElementById('msBtn'), msPanel=document.getElementById('msPanel');
+msBtn.onclick = e=>{
+  e.stopPropagation();
+  const abierto = msPanel.classList.toggle('abierto');
+  msBtn.setAttribute('aria-expanded', abierto);
+};
+msPanel.onclick = e=>e.stopPropagation();
+document.addEventListener('click', ()=>{
+  msPanel.classList.remove('abierto');
+  msBtn.setAttribute('aria-expanded','false');
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ msPanel.classList.remove('abierto'); msBtn.setAttribute('aria-expanded','false'); }
+});
 document.getElementById('btnBorrar').onclick = ()=>{
-  segmentoSel='Todos'; productoSel='Consumo'; carteraSel=PRODUCTOS['Consumo'][0];
+  segmentosSel.clear(); productoSel='Consumo'; carteraSel=PRODUCTOS['Consumo'][0];
   render(true,['panelTotal','panelDetalle']);
 };
 render(false,[]);
