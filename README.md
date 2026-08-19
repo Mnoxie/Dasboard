@@ -1,450 +1,379 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vista de Campaña Comercial · Portfolio Manager</title>
+<title>Manuel Otaiza — Presentación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
-
-:root{
-  --rojo:#EC0000;
-  --rojo-osc:#B80000;
-  --rojo-soft:#FDECEC;
-  --navy:#141C2E;
-  --tinta:#1F2226;
-  --tinta-60:#5C6268;
-  --tinta-35:#949BA2;
-  --fondo:#EFF1F3;
-  --panel:#FFFFFF;
-  --panel-2:#F7F8FA;
-  --linea:#DCE1E6;
-  --linea-suave:#EBEEF1;
-  --verde:#357A39;
-  --verde-soft:#E9F4EA;
-  --ambar:#A96A00;
-  --ambar-soft:#FCF2E1;
-  --sombra:0 1px 3px rgba(20,28,46,.10), 0 1px 1px rgba(20,28,46,.04);
-}
-*{box-sizing:border-box;}
-body{
-  margin:0;background:var(--fondo);color:var(--tinta);
-  font-family:'Open Sans',system-ui,sans-serif;font-size:13px;line-height:1.45;
-}
-
-/* ---------- Cabecera ---------- */
-.topbar{
-  background:var(--panel);
-  border-bottom:3px solid var(--rojo);
-  padding:12px 22px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:18px;flex-wrap:wrap;
-}
-.tb-left{display:flex;align-items:center;gap:12px;}
-/* SLOT DEL LOGO — reemplazá por: <img src="logo-santander.svg" alt="Santander" class="logo-img"> */
-.logo-slot{
-  width:38px;height:38px;border-radius:5px;background:var(--rojo);
-  display:grid;place-items:center;color:#fff;font-size:7px;font-weight:700;
-  letter-spacing:.06em;text-align:center;line-height:1.1;flex-shrink:0;
-}
-.logo-img{width:38px;height:38px;object-fit:contain;display:block;}
-.tb-title{font-size:17px;font-weight:700;margin:0;letter-spacing:-.01em;}
-.tb-sub{font-size:12px;color:var(--tinta-60);margin:0;}
-
-.tb-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.filtro{
-  display:flex;align-items:center;gap:7px;
-  background:var(--panel-2);border:1px solid var(--linea);
-  border-radius:5px;padding:6px 10px;
-}
-.filtro-ico{width:13px;height:13px;flex-shrink:0;color:var(--tinta-60);}
-.filtro-lab{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--tinta-35);}
-.filtro select{
-  font-family:inherit;font-size:12px;font-weight:600;color:var(--tinta);
-  border:none;background:transparent;cursor:pointer;padding:0;outline:none;
-}
-.ms{position:relative;}
-.ms-btn{
-  display:flex;align-items:center;gap:6px;
-  font-family:inherit;font-size:12px;font-weight:600;color:var(--tinta);
-  background:none;border:none;padding:0;cursor:pointer;
-}
-.ms-btn svg{width:11px;height:11px;color:var(--tinta-35);transition:transform .15s;}
-.ms-btn[aria-expanded="true"] svg{transform:rotate(180deg);}
-.ms-panel{
-  display:none;position:absolute;top:calc(100% + 9px);right:0;z-index:30;
-  min-width:190px;padding:5px;
-  background:var(--panel);border:1px solid var(--linea);border-radius:7px;
-  box-shadow:0 6px 20px rgba(20,28,46,.16);
-}
-.ms-panel.abierto{display:block;}
-.ms-opt{
-  display:flex;align-items:center;gap:9px;
-  padding:8px 10px;border-radius:5px;cursor:pointer;
-  font-size:12.5px;font-weight:600;color:var(--tinta-60);
-  user-select:none;
-}
-.ms-opt:hover{background:var(--panel-2);color:var(--tinta);}
-.ms-opt input{width:15px;height:15px;accent-color:var(--rojo);cursor:pointer;margin:0;flex-shrink:0;}
-.ms-opt.todos{border-bottom:1px solid var(--linea-suave);border-radius:5px 5px 0 0;margin-bottom:3px;padding-bottom:9px;}
-.btn-borrar{
-  display:flex;align-items:center;gap:6px;
-  font-family:inherit;font-size:11px;font-weight:600;color:var(--tinta-60);
-  background:none;border:1px solid transparent;border-radius:5px;
-  padding:7px 10px;cursor:pointer;
-}
-.btn-borrar:hover{background:var(--rojo-soft);color:var(--rojo-osc);}
-
-/* ---------- Estructura ---------- */
-.shell{display:flex;gap:16px;padding:16px 22px 40px;align-items:flex-start;}
-.main{flex:1;min-width:0;}
-
-/* ---------- Menú de vistas (placeholder, no navegable) ---------- */
-.rail{
-  width:104px;flex-shrink:0;
-  display:flex;flex-direction:column;gap:8px;
-  position:sticky;top:16px;
-}
-.rail-tit{
-  font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--tinta-35);padding-left:4px;margin-bottom:2px;
-}
-.vista{
-  font-family:inherit;font-size:11.5px;font-weight:700;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--tinta-35);
-  background:var(--panel);border:1px solid var(--linea);
-  border-radius:999px;padding:11px 8px;text-align:center;
-  cursor:not-allowed;user-select:none;
-}
-.vista[data-activa="true"]{background:var(--rojo);border-color:var(--rojo);color:#fff;cursor:default;}
-
-/* ---------- Pestañas de segmentador ---------- */
-.tabs{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-bottom:-9px;padding-right:6px;position:relative;z-index:2;}
-.tab{
-  position:relative;
-  font-family:inherit;font-size:11.5px;font-weight:700;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--tinta-60);
-  background:var(--panel);border:1px solid var(--linea);
-  border-radius:9px 9px 0 0;padding:9px 22px 15px;cursor:pointer;
-  box-shadow:0 -1px 2px rgba(20,28,46,.05);
-  transition:background .15s,color .15s,border-color .15s;
-}
-.tab:hover{color:var(--tinta);border-color:var(--tinta-35);}
-.tab[aria-pressed="true"]{background:var(--rojo);border-color:var(--rojo);color:#fff;}
-.tab:focus-visible{outline:2px solid var(--navy);outline-offset:2px;}
-.tab.enter{animation:pop .22s ease-out backwards;}
-@keyframes pop{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
-
-/* ---------- Tarjetas ---------- */
-.card{
-  background:var(--panel);border:1px solid var(--linea);border-radius:9px;
-  box-shadow:var(--sombra);padding:16px;margin-bottom:18px;position:relative;
-}
-.card.flash{animation:flash .5s ease-out;}
-@keyframes flash{
-  0%{box-shadow:0 0 0 0 rgba(236,0,0,.32),var(--sombra);}
-  100%{box-shadow:0 0 0 8px rgba(236,0,0,0),var(--sombra);}
-}
-.card-tag{font-size:12px;font-weight:700;color:var(--tinta-60);margin:0 0 10px;}
-.card-scope{font-size:11px;color:var(--tinta-35);font-weight:400;margin-left:8px;}
-.card-body{display:flex;gap:16px;align-items:stretch;flex-wrap:wrap;}
-.card-body > .tabla-wrap{flex:1 1 620px;min-width:0;overflow-x:auto;}
-
-/* ---------- Matriz ---------- */
-table{border-collapse:collapse;width:100%;min-width:620px;}
-thead th{
-  background:var(--navy);color:#fff;
-  font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
-  padding:9px 5px;text-align:center;white-space:nowrap;
-  border-right:1px solid rgba(255,255,255,.10);
-}
-thead th:first-child,thead th:nth-child(2){background:var(--panel);border-right-color:var(--linea);}
-tbody th{
-  text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.06em;
-  text-transform:uppercase;white-space:nowrap;padding:10px 9px;
-  border:1px solid var(--linea);background:var(--panel);
-}
-tbody td{
-  padding:10px 5px;text-align:right;font-size:12px;font-weight:600;
-  font-variant-numeric:tabular-nums;border:1px solid var(--linea);white-space:nowrap;
-}
-td.unidad{
-  text-align:center;font-size:10px;font-weight:700;color:var(--tinta-35);
-  letter-spacing:.05em;background:var(--panel-2);
-}
-.chip{display:inline-block;min-width:48px;padding:2px 5px;border-radius:4px;
-  font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums;}
-.chip.alta{background:var(--verde-soft);color:var(--verde);}
-.chip.media{background:var(--ambar-soft);color:var(--ambar);}
-.chip.baja{background:var(--rojo-soft);color:var(--rojo-osc);}
-
-/* ---------- KPIs ---------- */
-.kpis{
-  flex:1 1 244px;
-  display:grid;grid-template-columns:1fr 1fr;gap:1px;
-  background:var(--linea);border:1px solid var(--linea);border-radius:7px;overflow:hidden;
-}
-.kpi{background:var(--panel);padding:14px 10px;text-align:center;display:flex;
-  flex-direction:column;justify-content:center;gap:5px;}
-.kpi-lab{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-60);line-height:1.25;}
-.kpi-val{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;}
-.kpi-val.rojo{color:var(--rojo-osc);}
-
-.aporte{
-  flex:1 1 244px;
-  border:1px solid var(--linea);border-radius:7px;overflow:hidden;
-  display:flex;flex-direction:column;
-}
-.aporte-head{
-  background:var(--navy);color:#fff;text-align:center;padding:8px;
-  font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
-}
-.aporte-body{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--linea);gap:1px;}
-.aporte-cel{background:var(--panel);padding:12px 5px;text-align:center;display:flex;
-  flex-direction:column;justify-content:center;gap:5px;}
-.aporte-lab{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-60);}
-.aporte-val{font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1;}
-
-@media (max-width:820px){
-  .shell{flex-direction:column;padding:14px;}
-  .rail{width:100%;flex-direction:row;flex-wrap:wrap;position:static;}
-  .rail-tit{width:100%;margin-bottom:0;}
-  .vista{flex:1;min-width:72px;padding:9px 4px;font-size:10.5px;}
-  .tabs{justify-content:flex-start;}
-  .card-body > .tabla-wrap{flex:1 1 100%;}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+  :root{
+    --noche:#0A1F2B;
+    --noche-2:#0E2B39;
+    --cal:#F2F0E9;
+    --grana:#8E1B3F;
+    --azul:#1348A0;
+    --pasto:#2E7D5B;
+    --arena:#D8C7A1;
+ 
+    --display:"Oswald","Haettenschweiler","Arial Narrow",Impact,sans-serif;
+    --texto:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+    --dato:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+ 
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--noche);
+    color:var(--cal);
+    font-family:var(--texto);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .envoltura{max-width:1060px;margin:0 auto;padding:0 24px}
+ 
+  /* ---------- Navegación ---------- */
+  .menu{
+    position:sticky;top:0;z-index:20;
+    background:rgba(10,31,43,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(242,240,233,.16);
+  }
+  .menu ul{
+    display:flex;flex-wrap:wrap;gap:24px;
+    list-style:none;margin:0;padding:14px 24px;
+    max-width:1060px;margin:0 auto;
+  }
+  .menu a{
+    color:rgba(242,240,233,.72);
+    text-decoration:none;
+    font-family:var(--dato);
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+  }
+  .menu a:hover,.menu a:focus-visible{color:var(--arena)}
+ 
+  /* ---------- Portada ---------- */
+  .portada{
+    position:relative;
+    overflow:hidden;
+    padding:72px 0 56px;
+    border-bottom:1px solid rgba(242,240,233,.16);
+    background:radial-gradient(120% 80% at 50% 0%, var(--noche-2) 0%, var(--noche) 62%);
+  }
+  .lineas{position:absolute;inset:0;opacity:.14;pointer-events:none}
+  .rotulo{
+    font-family:var(--dato);
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--arena);margin:0 0 14px;position:relative;
+  }
+  .nombre{
+    position:relative;
+    font-family:var(--display);font-weight:700;text-transform:uppercase;
+    font-size:clamp(52px,13vw,142px);line-height:.86;letter-spacing:-.01em;margin:0;
+  }
+  .nombre span{display:block}
+  .nombre .apellido{color:var(--arena)}
+  .bajada{
+    position:relative;max-width:52ch;margin:24px 0 0;
+    font-size:clamp(16px,2.2vw,19px);color:rgba(242,240,233,.85);
+  }
+  .porque{
+    position:relative;
+    margin-top:40px;
+    max-width:60ch;
+    border-left:3px solid var(--grana);
+    padding-left:22px;
+  }
+  .porque h2{
+    font-family:var(--display);font-weight:600;text-transform:uppercase;
+    font-size:clamp(20px,3.4vw,28px);line-height:1.1;letter-spacing:.01em;
+    margin:0 0 10px;color:var(--arena);
+  }
+  .porque p{margin:0;color:rgba(242,240,233,.85);font-size:16px}
+  .porque a{color:var(--cal);text-underline-offset:4px;text-decoration-thickness:1px}
+  .porque a:hover{color:var(--arena)}
+ 
+  .datos{
+    position:relative;display:flex;flex-wrap:wrap;margin-top:36px;
+    border-top:1px solid rgba(242,240,233,.18);
+  }
+  .dato{flex:1 1 180px;padding:16px 20px 16px 0;border-right:1px solid rgba(242,240,233,.12)}
+  .dato:last-child{border-right:0}
+  .dato dt{
+    font-family:var(--dato);font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:rgba(242,240,233,.55);margin:0 0 4px;
+  }
+  .dato dd{
+    margin:0;font-family:var(--display);font-weight:600;font-size:20px;
+    letter-spacing:.02em;text-transform:uppercase;
+  }
+ 
+  /* ---------- Secciones ---------- */
+  section{padding:76px 0;border-bottom:1px solid rgba(242,240,233,.12)}
+  .titulo{
+    font-family:var(--display);font-weight:600;text-transform:uppercase;
+    font-size:clamp(30px,5.4vw,50px);letter-spacing:.01em;line-height:1;margin:0 0 10px;
+  }
+  .subtitulo{margin:0 0 40px;color:rgba(242,240,233,.7);max-width:54ch}
+ 
+  /* ---------- Hobbies (tarjetas) ---------- */
+  .tarjetas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .tarjeta{
+    border:1px solid rgba(242,240,233,.22);
+    background:var(--noche-2);
+    padding:26px 24px 28px;
+    display:flex;flex-direction:column;gap:10px;
+    border-top:3px solid var(--arena);
+    transition:transform .2s ease,border-color .2s ease,background .2s ease;
+    animation:entrar .5s ease backwards;
+  }
+  .tarjeta:hover{transform:translateY(-4px);background:#123244;border-top-color:var(--grana)}
+  .tarjeta .etiqueta{
+    font-family:var(--dato);font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--arena);margin:0;
+  }
+  .tarjeta h3{
+    font-family:var(--display);font-weight:600;text-transform:uppercase;
+    font-size:clamp(22px,3.2vw,28px);line-height:1.05;margin:0;
+  }
+  .tarjeta p{margin:0;font-size:15px;color:rgba(242,240,233,.82)}
+  @keyframes entrar{from{opacity:0;transform:translateY(14px)}}
+ 
+  /* ---------- Series ---------- */
+  .series{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .serie{
+    border:1px solid rgba(242,240,233,.22);
+    padding:26px 22px;background:var(--noche-2);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .serie .puesto-lista{
+    font-family:var(--dato);font-size:11px;letter-spacing:.2em;
+    color:var(--arena);text-transform:uppercase;
+  }
+  .serie h3{
+    font-family:var(--display);font-weight:600;text-transform:uppercase;
+    font-size:clamp(20px,3vw,26px);line-height:1.05;margin:0;
+  }
+  .serie p{margin:0;font-size:15px;color:rgba(242,240,233,.8)}
+ 
+  /* ---------- Fútbol ---------- */
+  .equipos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:32px}
+  .equipo{
+    position:relative;overflow:hidden;
+    border:1px solid rgba(242,240,233,.22);
+    padding:28px;min-height:220px;
+    display:flex;flex-direction:column;justify-content:flex-end;
+  }
+  .equipo .franjas{position:absolute;inset:0;opacity:.9}
+  .equipo--blaugrana .franjas{background:repeating-linear-gradient(90deg,var(--grana) 0 14%, var(--azul) 14% 28%)}
+  .equipo--azul .franjas{background:linear-gradient(160deg,var(--azul) 0%, #0A2E6B 100%)}
+  .equipo .velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,31,43,.25),rgba(10,31,43,.88))}
+  .equipo h3,.equipo p,.equipo .puesto-lista{position:relative;margin:0}
+  .equipo .puesto-lista{
+    font-family:var(--dato);font-size:11px;letter-spacing:.2em;
+    color:var(--arena);text-transform:uppercase;margin-bottom:8px;
+  }
+  .equipo h3{
+    font-family:var(--display);text-transform:uppercase;font-weight:600;
+    font-size:clamp(22px,3.4vw,30px);line-height:1.05;
+  }
+  .equipo p{margin-top:8px;color:rgba(242,240,233,.88);font-size:15px}
+ 
+  footer{
+    padding:32px 0 56px;font-family:var(--dato);font-size:12px;
+    letter-spacing:.14em;text-transform:uppercase;color:rgba(242,240,233,.55);
+  }
+ 
+  @media (max-width:900px){
+    .tarjetas{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:860px){
+    .series{grid-template-columns:1fr}
+  }
+  @media (max-width:760px){
+    .tarjetas{grid-template-columns:1fr}
+    .equipos{grid-template-columns:1fr}
+    .dato{border-right:0;border-bottom:1px solid rgba(242,240,233,.12);flex:1 1 100%}
+    .dato:last-child{border-bottom:0}
+    section{padding:56px 0}
+    .menu ul{gap:16px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+    html{scroll-behavior:auto}
+  }
 </style>
 </head>
 <body>
-
-<header class="topbar">
-  <div class="tb-left">
-    <!-- Reemplazá por: <img src="logo-santander.svg" alt="Santander" class="logo-img"> -->
-    <div class="logo-slot">LOGO</div>
-    <div>
-      <h1 class="tb-title">Vista de Campaña Comercial</h1>
-      <p class="tb-sub">Portfolio Manager Particulares &amp; BP</p>
+ 
+<nav class="menu" aria-label="Secciones">
+  <ul>
+    <li><a href="#presentacion">Manuel Otaiza</a></li>
+    <li><a href="#hobbies">Mis hobbies</a></li>
+    <li><a href="#series">Mis series</a></li>
+    <li><a href="#peliculas">Mis películas</a></li>
+    <li><a href="#futbol">Fútbol y equipos</a></li>
+  </ul>
+</nav>
+ 
+<header class="portada" id="presentacion">
+  <svg class="lineas" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true">
+    <g fill="none" stroke="#F2F0E9" stroke-width="2">
+      <rect x="2" y="2" width="996" height="496"/>
+      <line x1="500" y1="0" x2="500" y2="500"/>
+      <circle cx="500" cy="250" r="90"/>
+      <rect x="2" y="150" width="120" height="200"/>
+      <rect x="878" y="150" width="120" height="200"/>
+    </g>
+  </svg>
+  <div class="envoltura">
+    <p class="rotulo">Mi presentación</p>
+    <h1 class="nombre">
+      <span>Manuel</span>
+      <span class="apellido">Otaiza</span>
+    </h1>
+    <p class="bajada">
+      Soy chileno y estudiante de Ingeniería en Informática, ya en el último año de la carrera.
+      Fuera de los ramos, el tiempo se me va entre la pelota, la pesca, la familia y una buena serie.
+    </p>
+ 
+    <div class="porque">
+      <h2>¿Por qué elegí informática?</h2>
+      <p>
+        La verdad es que empezó en la media: veía videos de
+        <a href="https://www.instagram.com/naschurmann/?hl=es" target="_blank" rel="noopener">Nicolás Schürmann</a>,
+        que era desarrollador, y de ahí le empecé a agarrar cariño al área. Lo que partió como
+        curiosidad terminó siendo la carrera que estoy a punto de terminar.
+      </p>
     </div>
-  </div>
-  <div class="tb-right">
-    <div class="filtro">
-      <svg class="filtro-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-      <div class="ms" id="msSegmento">
-        <div class="filtro-lab">Segmento</div>
-        <button class="ms-btn" id="msBtn" type="button" aria-haspopup="true" aria-expanded="false">
-          <span id="msLabel">Todos</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="ms-panel" id="msPanel" role="group" aria-label="Segmentos"></div>
-      </div>
-    </div>
-    <button class="btn-borrar" id="btnBorrar" type="button">
-      <svg class="filtro-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-      Borrar filtros
-    </button>
+    <dl class="datos">
+      <div class="dato"><dt>País</dt><dd>Chile</dd></div>
+      <div class="dato"><dt>Carrera</dt><dd>Ing. Informática</dd></div>
+      <div class="dato"><dt>Etapa</dt><dd>Último año</dd></div>
+      <div class="dato"><dt>Colores</dt><dd>La U · Barcelona</dd></div>
+    </dl>
   </div>
 </header>
-
-<div class="shell">
-
-  <nav class="rail" aria-label="Vistas del reporte">
-    <div class="rail-tit">Vistas</div>
-    <div class="vista" data-activa="true" aria-current="page">Vista 1</div>
-    <div class="vista" aria-disabled="true">Vista 2</div>
-    <div class="vista" aria-disabled="true">Vista 3</div>
-    <div class="vista" aria-disabled="true">Vista 4</div>
-    <div class="vista" aria-disabled="true">Vista 5</div>
-  </nav>
-
-  <main class="main">
-
-  <div class="tabs" id="tabsProducto" role="group" aria-label="Producto"></div>
-
-  <section class="card" id="panelTotal">
-    <p class="card-tag">Total<span class="card-scope" id="scopeTotal"></span></p>
-    <div class="card-body">
-      <div class="tabla-wrap"><table id="tablaTotal"></table></div>
-      <div class="kpis">
-        <div class="kpi"><div class="kpi-lab">% Atraso</div><div class="kpi-val rojo" id="kpiAtraso">—</div></div>
-        <div class="kpi"><div class="kpi-lab">Cobertura morosos</div><div class="kpi-val" id="kpiCobertura">—</div></div>
-        <div class="kpi"><div class="kpi-lab">Venta promedio</div><div class="kpi-val" id="kpiVenta">—</div></div>
-        <div class="kpi"><div class="kpi-lab">Oferta promedio</div><div class="kpi-val" id="kpiOferta">—</div></div>
+ 
+<main>
+ 
+  <section id="hobbies">
+    <div class="envoltura">
+      <h2 class="titulo">Mis hobbies</h2>
+      <p class="subtitulo">Lo que hago cuando no estoy estudiando.</p>
+ 
+      <div class="tarjetas">
+        <article class="tarjeta" style="animation-delay:.05s">
+          <p class="etiqueta">Aire libre</p>
+          <h3>La pesca</h3>
+          <p>El panorama más tranquilo de todos: preparar el equipo, tirar la línea y esperar. Sirve para desconectarse un rato del computador y de la ciudad.</p>
+        </article>
+        <article class="tarjeta" style="animation-delay:.12s">
+          <p class="etiqueta">Los míos</p>
+          <h3>La familia</h3>
+          <p>Pasar tiempo con mi familia es lo que más ordena la semana. Un almuerzo largo o una tarde sin apuro vale por cualquier otro plan.</p>
+        </article>
+        <article class="tarjeta" style="animation-delay:.19s">
+          <p class="etiqueta">Cancha</p>
+          <h3>El fútbol</h3>
+          <p>Verlo y jugarlo. Es el tema del que puedo hablar sin cansarme y el que me hace revisar los resultados apenas termina la fecha.</p>
+        </article>
+        <article class="tarjeta" style="animation-delay:.26s">
+          <p class="etiqueta">Pantalla</p>
+          <h3>Los videojuegos</h3>
+          <p>Lo que más juego en la semana, solo o en línea con amigos. También es parte de la razón por la que terminé metido en la informática.</p>
+        </article>
+        <article class="tarjeta" style="animation-delay:.33s">
+          <p class="etiqueta">Sonido</p>
+          <h3>La música</h3>
+          <p>Suena mientras estudio, mientras programo y mientras hago cualquier otra cosa. Es lo que arma el resto del día.</p>
+        </article>
       </div>
     </div>
   </section>
-
-  <div class="tabs" id="tabsCartera" role="group" aria-label="Tipo de cartera"></div>
-
-  <section class="card" id="panelDetalle">
-    <p class="card-tag">Detalle<span class="card-scope" id="scopeDetalle"></span></p>
-    <div class="card-body">
-      <div class="tabla-wrap"><table id="tablaDetalle"></table></div>
-      <div class="aporte">
-        <div class="aporte-head">Aporte al total</div>
-        <div class="aporte-body">
-          <div class="aporte-cel"><div class="aporte-lab">Oferta</div><div class="aporte-val" id="apOferta">—</div></div>
-          <div class="aporte-cel"><div class="aporte-lab">Venta</div><div class="aporte-val" id="apVenta">—</div></div>
-          <div class="aporte-cel"><div class="aporte-lab">% Atraso</div><div class="aporte-val" id="apAtraso">—</div></div>
+ 
+  <section id="series">
+    <div class="envoltura">
+      <h2 class="titulo">Mis 3 series favoritas</h2>
+      <p class="subtitulo">Las que recomiendo sin pensarlo dos veces.</p>
+      <div class="series">
+        <article class="serie">
+          <p class="puesto-lista">01</p>
+          <h3>Suits</h3>
+          <p>Abogados, trajes y diálogos rápidos. La típica serie que empiezas por un capítulo y terminas viendo cuatro.</p>
+        </article>
+        <article class="serie">
+          <p class="puesto-lista">02</p>
+          <h3>Breaking Bad</h3>
+          <p>Ver cómo Walter White se transforma capítulo a capítulo es lo mejor que le ha pasado a la televisión.</p>
+        </article>
+        <article class="serie">
+          <p class="puesto-lista">03</p>
+          <h3>Lucifer</h3>
+          <p>Casos policiales con humor y un protagonista que se roba cada escena. Perfecta para ver relajado.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+ 
+  <section id="peliculas">
+    <div class="envoltura">
+      <h2 class="titulo">Mis 3 películas favoritas</h2>
+      <p class="subtitulo">Las que puedo repetir cuando sea.</p>
+      <div class="series">
+        <article class="serie">
+          <p class="puesto-lista">01</p>
+          <h3>Hasta el último hombre</h3>
+          <p>Una historia real de guerra que se sostiene sola. De esas que te dejan pensando un buen rato después de los créditos.</p>
+        </article>
+        <article class="serie">
+          <p class="puesto-lista">02</p>
+          <h3>Son como niños</h3>
+          <p>Puro humor y amigos de toda la vida. Perfecta para ver acompañado y reírse sin complicarse.</p>
+        </article>
+        <article class="serie">
+          <p class="puesto-lista">03</p>
+          <h3>¿Qué pasó ayer?</h3>
+          <p>Toda la saga, no solo la primera. Cada una tiene su desorden y funciona igual de bien.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+ 
+  <section id="futbol">
+    <div class="envoltura">
+      <h2 class="titulo">Fútbol y equipos</h2>
+      <p class="subtitulo">
+        Me gusta mucho el fútbol: verlo y jugarlo. Podría decirse que soy fanático de mis dos equipos,
+        así que entre la liga chilena y la española siempre hay un partido esperando.
+      </p>
+      <div class="equipos">
+        <div class="equipo equipo--azul">
+          <div class="franjas"></div><div class="velo"></div>
+          <p class="puesto-lista">Chile</p>
+          <h3>Universidad de Chile</h3>
+          <p>Mi equipo acá. Los partidos se ven sin importar el día ni la hora, y los clásicos se sufren completos.</p>
+        </div>
+        <div class="equipo equipo--blaugrana">
+          <div class="franjas"></div><div class="velo"></div>
+          <p class="puesto-lista">España</p>
+          <h3>FC Barcelona</h3>
+          <p>El equipo que sigo en Europa. Me gusta el juego de toque y salir jugando desde atrás.</p>
         </div>
       </div>
     </div>
   </section>
-
-  </main>
-</div>
-
-<script>
-const SEGMENTOS = ['Classic','A','B','Select','Negocio','P1','P2'];
-const PRODUCTOS = {
-  'Consumo':   ['Gestión Anticipada','Cartera Irregular','Cartera Vencida'],
-  'Hipoteca':  ['Reestructuración Hipotecaria','Salida Integral','Reorganiza','Posterga','OTC'],
-  'Comercial': ['Gestión Anticipada','Compra Cartera Interna','Adendum','Comercial']
-};
-const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-
-function seed(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967295;}
-function datos(seg,prod,sub,mes){
-  const k=seg+prod+sub+mes;
-  const oferta=Math.round(180+seed(k)*1650);
-  const venta =Math.round(oferta*(0.16+seed(sub+mes+seg)*0.40));
-  const atraso=venta*(0.06+seed(mes+prod+seg)*0.22);
-  return {oferta,venta,atraso};
-}
-
-const nMil = new Intl.NumberFormat('es-CL');
-const nDec = new Intl.NumberFormat('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1});
-
-let segmentosSel = new Set(); // vacio = todos
-let productoSel='Consumo', carteraSel=PRODUCTOS['Consumo'][0];
-
-const segsActivos = () => segmentosSel.size ? [...segmentosSel] : SEGMENTOS;
-function etiquetaSegmento(){
-  if(segmentosSel.size===0) return 'Todos';
-  if(segmentosSel.size===1) return [...segmentosSel][0];
-  if(segmentosSel.size===SEGMENTOS.length) return 'Todos';
-  return segmentosSel.size + ' seleccionados';
-}
-
-function agregados(subs){
-  const segs=segsActivos();
-  return MESES.map(mes=>{
-    let o=0,v=0,a=0;
-    segs.forEach(s=>subs.forEach(sub=>{
-      const d=datos(s,productoSel,sub,mes); o+=d.oferta; v+=d.venta; a+=d.atraso;
-    }));
-    return {oferta:o,venta:v,atraso:a};
-  });
-}
-const suma = arr => arr.reduce((t,c)=>({oferta:t.oferta+c.oferta,venta:t.venta+c.venta,atraso:t.atraso+c.atraso}),{oferta:0,venta:0,atraso:0});
-
-function chipEfect(c){
-  const p=c.oferta?c.venta/c.oferta*100:0;
-  const cls=p>=34?'alta':(p>=26?'media':'baja');
-  return `<span class="chip ${cls}">${nDec.format(p)}%</span>`;
-}
-
-function pintarTabla(el,cols){
-  const filas=[
-    ['Oferta','MM$', c=>nMil.format(c.oferta)],
-    ['Venta','MM$',  c=>nMil.format(c.venta)],
-    ['Efectividad','%', chipEfect],
-    ['Atraso venta','%', c=>nDec.format(c.venta?c.atraso/c.venta*100:0)+'%']
-  ];
-  el.innerHTML =
-    '<thead><tr><th></th><th></th>' + MESES.map(m=>`<th>${m}</th>`).join('') + '</tr></thead><tbody>' +
-    filas.map(([lab,uni,fn]) =>
-      `<tr><th>${lab}</th><td class="unidad">${uni}</td>` +
-      cols.map(c=>`<td>${fn(c)}</td>`).join('') + '</tr>'
-    ).join('') + '</tbody>';
-}
-
-function pintarTabs(id,valores,activo,onPick,animar){
-  const cont=document.getElementById(id);
-  cont.innerHTML='';
-  valores.forEach((v,i)=>{
-    const b=document.createElement('button');
-    b.className='tab'+(animar?' enter':'');
-    if(animar) b.style.animationDelay=(i*40)+'ms';
-    b.type='button'; b.textContent=v;
-    b.setAttribute('aria-pressed', v===activo);
-    b.onclick=()=>onPick(v);
-    cont.appendChild(b);
-  });
-}
-
-function render(animarCartera,paneles){
-  document.getElementById('msLabel').textContent = etiquetaSegmento();
-  const panel = document.getElementById('msPanel');
-  panel.innerHTML =
-    `<label class="ms-opt todos"><input type="checkbox" data-todos="1"${segmentosSel.size===0?' checked':''}>Todos</label>` +
-    SEGMENTOS.map(v=>
-      `<label class="ms-opt"><input type="checkbox" value="${v}"${segmentosSel.has(v)?' checked':''}>${v}</label>`
-    ).join('');
-  panel.querySelectorAll('input').forEach(inp=>{
-    inp.onchange = ()=>{
-      if(inp.dataset.todos){ segmentosSel.clear(); }
-      else if(inp.checked){ segmentosSel.add(inp.value); }
-      else { segmentosSel.delete(inp.value); }
-      render(false,['panelTotal','panelDetalle']);
-    };
-  });
-
-  pintarTabs('tabsProducto',Object.keys(PRODUCTOS),productoSel,v=>{
-    productoSel=v; carteraSel=PRODUCTOS[v][0]; render(true,['panelTotal','panelDetalle']);
-  },false);
-  pintarTabs('tabsCartera',PRODUCTOS[productoSel],carteraSel,v=>{
-    carteraSel=v; render(false,['panelDetalle']);
-  },animarCartera);
-
-  const subsTotal = PRODUCTOS[productoSel];
-  const colsTotal = agregados(subsTotal);
-  const colsDet   = agregados([carteraSel]);
-
-  pintarTabla(document.getElementById('tablaTotal'),colsTotal);
-  pintarTabla(document.getElementById('tablaDetalle'),colsDet);
-
-  const T=suma(colsTotal), n=colsTotal.length;
-  document.getElementById('kpiAtraso').textContent    = Math.round(T.venta?T.atraso/T.venta*100:0)+'%';
-  document.getElementById('kpiCobertura').textContent = Math.round(38+(T.oferta%25))+'%';
-  document.getElementById('kpiVenta').textContent     = Math.round(T.venta/n)+' M';
-  document.getElementById('kpiOferta').textContent    = nDec.format(T.oferta/n/1000)+' MM';
-
-  const D=suma(colsDet);
-  const pct=(a,b)=> b? Math.round(a/b*100)+'%' : '—';
-  document.getElementById('apOferta').textContent = pct(D.oferta,T.oferta);
-  document.getElementById('apVenta').textContent  = pct(D.venta,T.venta);
-  document.getElementById('apAtraso').textContent = Math.round(D.venta?D.atraso/D.venta*100:0)+'%';
-
-  document.getElementById('scopeTotal').textContent =
-    `· ${etiquetaSegmento()} · ${productoSel} — suma de ${PRODUCTOS[productoSel].length} tipos de cartera`;
-  document.getElementById('scopeDetalle').textContent = `· ${etiquetaSegmento()} · ${productoSel} › ${carteraSel}`;
-
-  (paneles||[]).forEach(id=>{
-    const el=document.getElementById(id);
-    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
-  });
-}
-
-const msBtn=document.getElementById('msBtn'), msPanel=document.getElementById('msPanel');
-msBtn.onclick = e=>{
-  e.stopPropagation();
-  const abierto = msPanel.classList.toggle('abierto');
-  msBtn.setAttribute('aria-expanded', abierto);
-};
-msPanel.onclick = e=>e.stopPropagation();
-document.addEventListener('click', ()=>{
-  msPanel.classList.remove('abierto');
-  msBtn.setAttribute('aria-expanded','false');
-});
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape'){ msPanel.classList.remove('abierto'); msBtn.setAttribute('aria-expanded','false'); }
-});
-document.getElementById('btnBorrar').onclick = ()=>{
-  segmentosSel.clear(); productoSel='Consumo'; carteraSel=PRODUCTOS['Consumo'][0];
-  render(true,['panelTotal','panelDetalle']);
-};
-render(false,[]);
-</script>
+ 
+</main>
+ 
+<footer>
+  <div class="envoltura">Manuel Otaiza · Chile · 2026</div>
+</footer>
+ 
 </body>
 </html>
+ 
