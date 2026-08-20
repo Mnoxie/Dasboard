@@ -1,8 +1,11 @@
 
 %sql
--- GESTION ANTICIPATIVA — Oferta y Venta por mes (desde 2501)
+-- GESTION ANTICIPATIVA — Oferta prom., Venta prom. y Efectividad por mes
 WITH oferta AS (
-  SELECT PERIODO AS periodo, SUM(MONTO_OFERTA)/1000000 AS OFERTA_MM
+  SELECT PERIODO AS periodo,
+         SUM(MONTO_OFERTA) AS oferta_suma,
+         ROUND(AVG(MONTO_OFERTA)/1000000, 2) AS OFERTA_PROMEDIO_MM,
+         COUNT(*) AS N_OFERTAS
   FROM practicas.practica_smartcredi.oferta_prueba
   WHERE TIPO_OFERTA = 'CONSUMO'
     AND CICLO_OFERTA = 0
@@ -10,7 +13,11 @@ WITH oferta AS (
   GROUP BY PERIODO
 ),
 venta AS (
-  SELECT periodo, SUM(deuda_total)/1000000 AS VENTA_MM
+  SELECT periodo,
+         SUM(CASE WHEN ind_oferta_pa IS NOT NULL
+                  THEN deuda_total ELSE 0 END) AS venta_con_oferta_suma,
+         ROUND(AVG(deuda_total)/1000000, 2) AS VENTA_PROMEDIO_MM,
+         COUNT(*) AS N_VENTAS
   FROM practicas.practica_smartcredi.venta_prueba
   WHERE cartera_sbif = 'CONSUMO'
     AND ciclo_curse = '0'
@@ -26,8 +33,11 @@ venta AS (
 )
 SELECT
   COALESCE(o.periodo, v.periodo) AS PERIODO,
-  o.OFERTA_MM,
-  v.VENTA_MM
+  o.OFERTA_PROMEDIO_MM,
+  o.N_OFERTAS,
+  v.VENTA_PROMEDIO_MM,
+  v.N_VENTAS,
+  ROUND(100.0 * v.venta_con_oferta_suma / o.oferta_suma, 1) AS EFECTIVIDAD_PCT
 FROM oferta o
 FULL OUTER JOIN venta v ON o.periodo = v.periodo
 ORDER BY PERIODO
