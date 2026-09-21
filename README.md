@@ -1,19 +1,18 @@
-SELECT
-  SUBSTRING(CAST(d.Fecha_proceso AS STRING),3,4) AS periodo,
-  v.cod_subsegmento,
-  CASE WHEN v.ciclo_curse='0' THEN 'GA'
-       WHEN v.ciclo_curse IN ('1','2','3') THEN 'CIRR'
-       WHEN v.ciclo_curse IS NOT NULL THEN 'CVEN'
-       ELSE 'SIN CLASIFICAR' END AS campana,
-  'Cartera Total' AS apertura,
-  SUM(v.deuda_total) AS monto
-FROM practicas.practica_smartcredi.dad_prueba d
-INNER JOIN practicas.practica_smartcredi.venta_prueba v
-  ON d.id_numero_operac = v.operacion
-WHERE d.id_concepto='COLOC'
-  AND d.ESTADO_DE_DEUDA NOT IN ('3','5')
-  AND SUBSTRING(CAST(d.CTA_ACTUAL AS STRING),1,4) NOT IN ('9600','1740','1735','1725','1710','1705','1120','1215','1695','1690','1820','9880','9899','1706','1730','9601','9602')
-  AND d.IND_CTAS_ORDEN = 0
-  AND v.cartera_sbif='CONSUMO'
-  AND v.cod_subsegmento IN (...lista...)
-GROUP BY 1,2,3
+CASE
+    WHEN (id_producto_alt IN ('50','53','54','59') AND producto_sbif IN ('270','280','320','290','310','210'))
+        THEN 'Hip+FG'
+
+    WHEN (id_producto_alt IN ('10','20','52') AND producto_sbif IN ('140'))
+        OR (id_producto_alt = '65' AND id_subprod_alt IN ('6587','6589','3550','6545','6547','6554','6555','6558','6613','6616','6664','6501','6568','6680','6690'))
+        OR (id_producto_alt IN ('77','80') AND producto_sbif IN ('130'))
+        OR (id_producto_alt IN ('0','51','70','85','86') AND producto_sbif IN ('140','342'))
+        THEN 'Consumo'
+
+    WHEN (id_producto_alt IN ('10','20','52') AND producto_sbif IN ('120'))
+        OR (id_producto_alt = '42' AND id_subprod_alt IN ('4794','4796','4797','4830','4833','4834','4835','4839','4840','4976','4182','4185','4325','4447','4449','4462','4463','4465','4470','4480','4483','4485','4491','4522','4527','4530','4542','4607','4904','4906','4934','4936','4948','4201','4204','4206','4209','4211','4244','4258','4277','4280','4281','4291','4292','4294','4523','4538','4559','4626','4643','4763'))
+        OR (id_producto_alt IN ('77','80') AND producto_sbif IN ('210'))
+        OR (id_producto_alt IN ('0','31','32','33','36','44','51','55','81','85','86') AND producto_sbif IN ('120','160','170','180','210','240','250','340','350','360'))
+        THEN 'Comercial'
+
+    ELSE 'Sin Clasificar'
+END AS macro_categoria
