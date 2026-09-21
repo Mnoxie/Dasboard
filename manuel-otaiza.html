@@ -25,11 +25,12 @@ WITH max_per AS (
 ),
 
 venta_ops AS (
-  SELECT periodo, operacion, segmento, campana, con_oferta, oferta, cluster_desafiante
+  SELECT periodo, operacion, fec_1er_vec, segmento, campana, con_oferta, oferta, cluster_desafiante
   FROM (
     SELECT
       periodo,
       operacion,
+      fec_1er_vec,
       CASE
         WHEN cod_subsegmento IN ('151','152','155','160','161','170','171','901','902','903','904','905','906','907','908',
                                   '909','959','961') THEN 'Classic'
@@ -80,7 +81,7 @@ atraso_raw AS (
       CASE
         WHEN d.ddas_atraso_en_dias > 0
          -- corte de madurez FIJO: 1er día del mes siguiente al último periodo disponible
-         AND d.ddas_FEC_1ER_VEC < CAST(DATE_FORMAT(ADD_MONTHS(TO_DATE(CONCAT('20', mp.mp, '01'), 'yyyyMMdd'), 1), 'yyyyMMdd') AS INT)
+         AND v.fec_1er_vec < CAST(DATE_FORMAT(ADD_MONTHS(TO_DATE(CONCAT('20', mp.mp, '01'), 'yyyyMMdd'), 1), 'yyyyMMdd') AS INT)
         THEN d.deuda_total ELSE 0
       END
     ) / 1000000.0 AS CARTERA_MOROSA_MM,
