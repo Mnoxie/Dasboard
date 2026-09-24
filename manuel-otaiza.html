@@ -1,21 +1,8 @@
 Bridge_Filtros =
-DISTINCT(
-    UNION(
-        SELECTCOLUMNS('Atraso camada',
-            "PRODUCTO", 'Atraso camada'[producto], "CAMPANA", 'Atraso camada'[campaña],
-            "SEGMENTO", 'Atraso camada'[segmento], "CLUSTER", 'Atraso camada'[cluster],
-            "OFERTA", 'Atraso camada'[oferta], "CON_OFERTA", 'Atraso camada'[con_oferta]),
-        SELECTCOLUMNS('Atraso stock',
-            "PRODUCTO", 'Atraso stock'[producto], "CAMPANA", 'Atraso stock'[campaña],
-            "SEGMENTO", 'Atraso stock'[segmento], "CLUSTER", 'Atraso stock'[cluster],
-            "OFERTA", 'Atraso stock'[oferta], "CON_OFERTA", 'Atraso stock'[con_oferta]),
-        SELECTCOLUMNS('Venta-oferta',
-            "PRODUCTO", 'Venta-oferta'[producto], "CAMPANA", 'Venta-oferta'[campaña],
-            "SEGMENTO", 'Venta-oferta'[segmento], "CLUSTER", 'Venta-oferta'[cluster],
-            "OFERTA", 'Venta-oferta'[oferta], "CON_OFERTA", 'Venta-oferta'[con_oferta]),
-        SELECTCOLUMNS('Cobertura',
-            "PRODUCTO", 'Cobertura'[producto], "CAMPANA", BLANK(),
-            "SEGMENTO", 'Cobertura'[segmento], "CLUSTER", 'Cobertura'[cluster],
-            "OFERTA", 'Cobertura'[oferta], "CON_OFERTA", BLANK())
-    )
-)
+ID_Filtro_6D = 'Bridge_Filtros'[PRODUCTO] & "|" & 'Bridge_Filtros'[SEGMENTO] & "|" &
+               'Bridge_Filtros'[CLUSTER] & "|" & 'Bridge_Filtros'[OFERTA] & "|" &
+               'Bridge_Filtros'[CON_OFERTA] & "|" & 'Bridge_Filtros'[CAMPANA]
+
+
+    ID_Filtro_4D = 'Bridge_Filtros'[PRODUCTO] & "|" & 'Bridge_Filtros'[SEGMENTO] & "|" &
+               'Bridge_Filtros'[CLUSTER] & "|" & 'Bridge_Filtros'[OFERTA]     
